@@ -40,3 +40,14 @@ C:\website\apiAdmin\apiAdmin\bin\Release\net5.0\Microsoft.IdentityModel.Protocol
 C:\website\apiAdmin\apiAdmin\bin\Release\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\website\apiAdmin\apiAdmin\bin\Release\net5.0\System.IdentityModel.Tokens.Jwt.dll
 C:\website\apiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.csproj.AssemblyReference.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.csproj.AssemblyReference.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.GeneratedMSBuildEditorConfig.editorconfig
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.AssemblyInfoInputs.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.AssemblyInfo.cs
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.csproj.CoreCompileInputs.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.MvcApplicationPartsAssemblyInfo.cs
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.MvcApplicationPartsAssemblyInfo.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.RazorAssemblyInfo.cache
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.RazorAssemblyInfo.cs
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.dll
+D:\websites\Calendarios\ApiAdmin\apiAdmin\obj\Release\net5.0\apiAdmin.pdb
