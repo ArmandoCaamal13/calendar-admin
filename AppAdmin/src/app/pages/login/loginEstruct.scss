@@ -1,0 +1,51 @@
+@import 'login';
+
+*{
+    margin: 0;
+}
+.container-login {   
+    height: 100vh;    
+    display: inline;
+    // grid-template-columns: 1fr 1fr;
+    // grid-template-rows: 1fr;
+    // grid-template-areas: "formulario logo";
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    z-index: 100000;
+    background: white;
+}
+
+.login-box {
+    grid-area: formulario;
+}
+.logo-box {
+    grid-area: logo;
+}
+
+@media (max-width: 900px) { 
+
+    .container-login {   
+        height: 100vh;    
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 20px;
+        grid-template-areas: "formulario formulario"
+                            "logo logo";
+
+                            position: fixed;
+                            top:0;
+                            left: 0;
+                            width: 100%;
+                            z-index: 100000;
+                            background: white;
+    }
+
+    .login-box {
+        grid-area: formulario;
+    }
+    .logo-box {
+        grid-area: logo;      
+    }
+}

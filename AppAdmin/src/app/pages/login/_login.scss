@@ -1,0 +1,132 @@
+$borderActiveColor : 3px solid #197e7e;
+
+@mixin display($direction,$justify,$align){
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+
+}
+
+
+.login-box {
+    @include display(row,center,center);
+}
+.box__form {  
+    @include display(column,space-between,none);
+    height: 200px;
+}
+.box{
+    width: 30%; 
+    height: 100%; 
+    padding-top: 15rem;
+    box-sizing: border-box;
+    border-radius: 20px;
+    top: 40%;
+    left: 36%;
+    margin: -25px 0 0 -25px;
+}
+
+.box__group {    
+    @include display(column,space-between,none);
+    border: 1px solid #979797;
+    border-radius: 12px;
+    padding: 5px; 
+    margin-bottom: 3vh;
+}
+.box--borderActive:hover {
+    border-left: $borderActiveColor;    
+    cursor:text;
+}
+
+.box--borderActive:focus-within{
+    border-left: $borderActiveColor;    
+}
+.box__input{
+    outline: none;
+    border: none;  
+    // font-weight: bold;
+    font-size: 15px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+}
+
+.box__label{
+    outline: none;
+    border: none;
+    font-size: 25px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.box__group--text{
+    font-size: 18px;
+    font-weight:bold;
+    color: #000;
+}
+
+.box__title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    font-family: "Microsoft JhengHei Light";
+    text-align: center
+}
+
+.box__detail{   
+    @include display(row,space-between,none);
+    color: #979797;
+    font-weight: bold;
+    font-size: 13px;    
+}
+.box__margin{
+    margin-bottom: 1px;
+}
+.box__active:hover{
+    color: cadetblue;
+    cursor: pointer;
+}
+
+.box__button {
+    width: 50%;
+    padding: 15px;
+    background: crimson;
+    color: white;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.box__button:hover{
+    background: #af0c2d;   
+}
+.logo-box {   
+    background: #3064AF;   
+    @include display(row,center,center);
+}
+.logo__img-card{
+    position: relative;
+}
+.logo__link {
+    position: absolute;
+    left: 50%;
+    bottom: 10px; 
+    padding: 10px;
+    font-size: 18px;
+}
+.logo__img {        
+   width: 100%;
+}
+.logo__img-card{ 
+    width: 50%;    
+}
+
+
+@media (max-width: 900px) { 
+    .logo__img-card{      
+        position: absolute;
+        width: 70px;
+        top: 50px;
+        left: 10px;
+    }    
+}

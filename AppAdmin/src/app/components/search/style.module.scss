@@ -1,0 +1,40 @@
+.search{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 0 0px 2em 0px;
+}
+.search__input{
+    outline: none;
+    border: none;
+    margin: 0 20px 0 0;
+    width: 10%;
+    padding: 5px;
+    font-weight:500;
+    font-size: 16px;
+    background: white;
+    &::placeholder{
+        color: #a1a1a191;
+        font-weight:500;
+    }
+}
+.search__item{
+    display: flex;
+    border: 1px solid #85858591;
+    border-radius: 4px;
+    background: white;
+    margin-right: 20px;
+    width: 100%;
+}
+.search__name{
+    height: 100%;
+    border: none;
+    border-right: 1px solid #85858591;
+    padding: 0 10px;
+
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+// .search__select{
+    
+// }
