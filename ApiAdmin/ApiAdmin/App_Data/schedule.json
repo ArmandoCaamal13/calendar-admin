@@ -1,0 +1,98 @@
+{
+  "ByTour": [],
+  "Dates": [
+    {
+      "Tour": "",
+      "Location": "OR",
+      "ToDate": 1,
+      "Date": [
+      ],
+      "Week": {
+        "Sunday": true,
+        "Monday": true,
+        "Tuesday": true,
+        "Wednesday": true,
+        "Thursday": true,
+        "Friday": true,
+        "Saturday": true
+      },
+      "NextDates": [
+        {
+          "startDate": "2023/03/06",
+          "endDate": "2023/03/06",
+          "week": {
+            "Sunday": false,
+            "Monday": false,
+            "Tuesday": false,
+            "Wednesday": false,
+            "Thursday": false,
+            "Friday": false,
+            "Saturday": false
+          }
+        }
+      ]
+    },
+    {
+      "Tour": "",
+      "Location": "NE",
+      "Date": [
+        "2023,09,03",
+        "2023,09,10",
+        "2023,09,14",
+        "2023,09,17",
+        "2023,09,21",
+        "2023,09,24",
+        "2023,09,28",
+        "2023,10,01",
+        "2023,10,05",
+        "2023,10,08",
+        "2023,10,12",
+        "2023,10,15",
+        "2023,10,19",
+        "2023,10,22",
+        "2023,10,26",
+        "2023,10,29"
+      ],
+      "Ignore": [],
+      "NextDates": [
+        {
+          "startDate": "2023/03/06",
+          "endDate": "2023/03/06",
+          "week": {
+            "Sunday": false,
+            "Monday": true,
+            "Tuesday": false,
+            "Wednesday": true,
+            "Thursday": true,
+            "Friday": true,
+            "Saturday": true
+          }
+        }
+      ]
+    },
+    {
+      "Tour": "",
+      "Location": "PS",
+      "Date": [],
+      "NextDates": [
+        {
+          "startDate": "2023/05/18",
+          "endDate": "2023/11/30",
+          "week": {
+            "Sunday": false,
+            "Monday": false,
+            "Tuesday": false,
+            "Wednesday": false,
+            "Thursday": false,
+            "Friday": false,
+            "Saturday": false
+          }
+        }
+      ]
+    }
+  ]
+}
+ 
+
+
+

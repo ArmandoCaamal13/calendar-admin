@@ -1,0 +1,24 @@
+@import "style/setting/varibale";
+
+.button{
+    padding: 8px 15px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.button__primary{
+    background: $primary;
+    color: white; 
+}
+
+.button__box{
+    border: 3px solid #195f88;
+    background: white;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    box-shadow: 1px 1px 6px rgba(93, 93, 93, 0.4);
+    border-radius: 4px;
+}

@@ -1,0 +1,15 @@
+@import 'style/setting/layout.scss';
+
+.template__content{
+    min-height: calc(100vh - $height-header) !important;
+}
+.template__menuContainer{
+    position: sticky;
+    top: $height-header;
+    height: 100%;
+}
+.template__menu{
+    position: sticky;
+    top: 0px;
+    height: calc(100vh - $height-header);
+}

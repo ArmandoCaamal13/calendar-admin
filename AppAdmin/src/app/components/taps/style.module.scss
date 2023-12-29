@@ -1,0 +1,21 @@
+.taps{
+    display: flex;
+    background: red;
+}
+.body{
+    background: gray;
+    width: 100%;
+}
+.title{
+    background: blue;
+
+}
+.content{
+    background: pink;
+}
+.none{
+    display: none !important;
+}
+.block{
+    display: block !important;
+}

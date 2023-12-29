@@ -1,0 +1,1 @@
+carpeta para formatear propiedades provenientes de apis o servicios de externos

@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'nunito-regular';
+    src: url('../../public/fonts/NunitoSans-Regular.ttf');
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+html{
+    font-size: 18px;
+    font-family: 'nunito-regular';
+    
+}
+body{
+//     height:100%;
+//   margin:0;
+//   display: flex;
+//   flex-direction: column;
+    
+}
+.blue{
+    background: blue
+}
+.red{
+    background: red
+}
+.green{
+    background: green
+}
+
+//utilities
+
+@import url('./utilties/index.scss');
+@import url('./plugin/antd.scss');
+
+
+/* new */
+.xml-container{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}

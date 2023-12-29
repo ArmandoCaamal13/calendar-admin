@@ -1,0 +1,23 @@
+.user{
+    background: #F2F3F5;
+    box-shadow: 1px 1px 6px rgba(195, 195, 195, 0.527);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    margin: 0 0 20px;
+}
+.user__img{
+    width: 100%;
+    max-width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 100%;
+    background: black;
+}
+.user__info{
+   line-height: normal;
+}
+.user__name{
+    font-weight: bold;
+}

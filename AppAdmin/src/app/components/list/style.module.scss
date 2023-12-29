@@ -1,0 +1,87 @@
+.list{
+    padding: 10px;
+    width: 110px;
+    background: #288ba9;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    -ms-user-select: none;
+    user-select: none;
+    margin-right: 100px;
+}
+
+button{
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+}
+
+.show_element{
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+    margin-left: 150px;
+}
+
+.hide_element{
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes otherAnimation {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes animationTranslateIn {
+    from{
+        opacity: 0;
+        transform: translateX(-200px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes animationTranslateOut {
+    from{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateX(-200px);
+    }
+}

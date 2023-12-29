@@ -1,0 +1,90 @@
+$clr-primary: #00AB55;
+$clr-gray300: #e6e4e4de;
+
+.select_list{
+    background: white;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    // border: 1px solid #b6b5b586;
+    box-shadow: 1px 4px 10px #bebebe86;
+    user-select: none;
+}
+.select_item{
+    border-radius: 5px;
+    padding: 10px;
+}
+.select_item:hover{
+    background: #e4e3e3bd;
+    cursor: pointer;
+}
+
+
+
+
+/*select*/
+
+.select{
+    position: relative;
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+}
+.select_select_ant{
+    width: 100% !important;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: none !important;
+    cursor: pointer;
+}
+
+.select_label{
+    position: absolute;
+    background: white;
+    transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+    color:  rgb(170, 167, 167);
+    visibility: visible !important;
+    padding: 0 10px;
+    left: 10px;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+.select_label_up{
+    top: -1px;
+    color: $clr-primary;
+}
+.select_focus{
+    border: 2px solid $clr-primary;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.input__form:focus ~ .select_placeholder,
+.input__form:not(:placeholder-shown).input__form:not(:focus) ~ .select_placeholder {
+    top: -0.5rem;
+    font-size: 0.8rem;
+    left: 0.8rem;
+    color: $clr-primary;
+}
+
+.input__form > input:placeholder-shown{
+    border: 5px solid $clr-gray300 !important;
+    background-color: red !important;
+}
+
+
+
+
+

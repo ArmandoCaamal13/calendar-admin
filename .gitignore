@@ -1,0 +1,5 @@
+AppAdmin/dist
+AppAdmin/node_modules
+ApiAdmin/ApiAdmin/bin
+ApiAdmin/ApiAdmin/obj
+ApiAdmin/.vs

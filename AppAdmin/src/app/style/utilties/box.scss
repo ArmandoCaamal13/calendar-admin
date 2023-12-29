@@ -1,0 +1,33 @@
+.height{
+    height: 100%;
+}
+.u-all-row{
+    flex-grow: 1;
+    height: 100%;
+}
+.u-relative{
+    position: relative;
+}
+.card--border-shadow{
+    box-shadow: 1px 1px 6px rgba(139, 139, 139, 0.315);
+}
+.u-box__icon{
+    margin-bottom: 5px;
+    color: rgb(31, 78, 105);
+    font-size: 19px;
+}
+.u-flex{
+    display: flex;
+    align-items: center;
+}
+.u-stiky{
+    position: sticky !important;
+    top: 114px;
+    height: 100%;
+}
+.u-icon{
+    display: none !important;
+}
+.hide{
+    display: none !important;
+}

@@ -1,0 +1,34 @@
+
+.datepicker{
+    border-radius: 10px !important;
+    padding: 10px !important;
+    width: 100%;
+    cursor: pointer !important;
+}
+
+.date_list{
+    overflow-y: auto;
+    margin: 20px 0 0 !important;  
+}
+.date_list_item{
+    border: 1px solid #acabab9a !important;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px 10px !important;
+    color: #883b3b !important;
+    font-weight: 700 !important;
+    transition: 1s border ease-in-out ;
+    cursor: pointer;
+    &:hover{
+        border: 1px solid #883b3b !important;
+    }
+}
+.date_close{
+    padding: 0 3px;
+    text-align: center !important;
+    &:hover{
+        background: #a6a6a6;
+        border-radius: 8px;
+        color: white !important;
+    }
+}

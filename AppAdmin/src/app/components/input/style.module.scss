@@ -1,0 +1,39 @@
+$clr-primary: #00AB55;
+$clr-gray300: #e6e4e4de;
+
+.input{
+  position: relative;
+  width: 100%;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+}
+.input_ant{
+  width: 100% !important;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: none !important;
+    cursor: pointer;
+    padding: 15px !important;
+}
+
+
+.select_label{
+  position: absolute;
+  background: white;
+  transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+  color:  rgb(170, 167, 167);
+  visibility: visible !important;
+  padding: 0 10px;
+  left: 10px;
+  top: 50%;
+  transform: translate(0,-50%);
+  cursor: text;
+}
+.select_label_up{
+  top: -1px;
+  color: $clr-primary;
+}
+.select_focus{
+  border: 2px solid $clr-primary;
+}

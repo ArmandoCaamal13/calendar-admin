@@ -1,0 +1,14 @@
+.BoxSite{
+    background: #1E88E5;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    cursor: pointer;
+    user-select: none;
+}
+.BoxSite__image{
+    margin: 0 20px 0 0;
+}
