@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "89c0c0d0-0836-42ed-bb34-9401437e5e58": {
+      "ProjectGuid": "89c0c0d0-0836-42ed-bb34-9401437e5e58",
+      "DisplayName": "apiAdmin",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
