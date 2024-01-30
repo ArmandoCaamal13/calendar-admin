@@ -1,6 +1,6 @@
 import  React, { useState } from 'react'
-import Header from 'components/header'
-import Menu from 'components/menu'
+import Header from '../../components/header'
+import Menu from '../../components/menu'
 import style from './style.module.scss'
 import { Layout } from 'antd';
 import { Provider } from 'react-redux';
@@ -25,7 +25,6 @@ const AdminTemplate = ({children}) => {
                             breakpoint="lg" 
                             theme = 'light'  
                             collapsedWidth = {0}
-                            className = {style.template__menu}
                         >
                             <Menu collapsed = {collapsed} />
                         </Sider>

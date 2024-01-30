@@ -5,8 +5,11 @@ export const MetaSeoContext = createContext()
 
 export const MetaSeoProvider = ({ children }) => {
     const [data, setData] = useState()
-    useEffect(async () => {
-        setData(await GetSeoXMlString())
+    useEffect(() => {
+        async function DataSeo(){
+            setData(await GetSeoXMlString())
+        }
+        DataSeo()
     }, [])
     return (
         <MetaSeoContext.Provider

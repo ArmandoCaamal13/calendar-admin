@@ -33,10 +33,9 @@ const TextAreaSeo = () => {
     } catch (error) {
       console.error('Error al guardar el XML', error);
     }
-    
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         let response = await GetSeoXMl();

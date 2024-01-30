@@ -7,20 +7,18 @@ import Search from 'components/search';
 import Calendar from 'components/calendar'
 import 'components/calendar/style.scss'
 import { API_SERVICE } from '../../api/schedules';
-import { useSelector } from 'react-redux/es/exports';
+import { useSelector } from 'react-redux';
 import EventEmitter from 'events';
 import useGetSite from 'components/search/hooks/useGetSites';
 import * as http from '../../api/service/httpService'
 import Swal from 'sweetalert2';
 
 const Layout = () => {
-    const Login = useSelector(state => state.login_data)
     const [schedules, setSchedules, addSchedule, addListSchedule] = useSchedules([]);
     const [activeKey, setActiveKey] = useState('1')
     const [coutPanes, setCountPanes] = useState(1)
     const [calendar, setCalendar] = useState()
     const [panes, setPanes] = useState([{ title: 'Default' }])
-    const handleEdit = (target, action) => eval(`${action}(${typeof target === 'object' ? '' : target})`)
     const [tap, setTap] = useState(0)
     const [dataFromComponentA, setDataFromComponentA] = useState(null);
     const [tourData, setTourData] = useState([]);
@@ -47,15 +45,15 @@ const Layout = () => {
                 if (response.Dates) {
                     setTourData(response.Dates);
                     console.log(response.Dates)
-                }else{
-                    
+                } else {
+
                     Swal.fire({
                         icon: "error",
-                        title:"No hay datos que mostrar",
-                        text: "No hay datos que mostrar",                        
+                        title: "No hay datos que mostrar",
+                        text: "No hay datos que mostrar",
                     })
                 }
-                
+
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
@@ -209,62 +207,96 @@ const Layout = () => {
         setSelectedOption(selectedOption)
         setDataFromComponentA()
     }
+
+    const handleTabClick = (tabIndex) => {
+        const key = String(tabIndex);
+        setActiveKey(key);
+        const _key = parseInt(key);
+        setTap(_key - 1);
+        calendar.RESET_CALENDAR(null, tourData[_key - 1]?.Location);
+        console.log(tourData[_key - 1]?.Tour, tourData[_key - 1]?.Location);
+    };
+
+    const handleTabClose = (tabIndex) => {
+        const target = tabIndex;
+        console.log(target);
+
+        // Verificar si la pestaña es cerrable (index !== 0)
+        if (target !== 0) {
+            let newPanes = [...panes];
+            newPanes = newPanes.filter((values, index) => {
+                return index + 1 !== target;
+            });
+
+            let _schedules = [...schedules];
+            _schedules = _schedules.filter((value, index) => index !== target - 1);
+
+            setSchedules(_schedules);
+            setPanes(newPanes);
+
+            // Cerrar la pestaña seleccionada
+            if (target === activeKey) {
+                const newActiveKey = target - 1 >= 1 ? target - 1 : '1';
+                setActiveKey(String(newActiveKey));
+            }
+        }
+    };
+
     return (
-        <Row>
-            <Col span={14}>
-                <Card>
-                    <Search
-                        options={useGetSite()}
-                        onDataSelect={setDataFromComponentA}
-                        onWeekValuesSelect={handleWeekValuesSelect}
-                        response={(data) => {
-                            console.log(data)
-                        }}
-                        //handleModalOpen={handleModalOpen}
-                    />
-                    <Tabs
-                        type="editable-card"
-                        activeKey={activeKey}
-                        onChange={handleChanges}
-                        onEdit={(target, action) => action === 'remove' && remove(target)}
-                    >
-                        {
-                            panes.map((values, index) => [
-                                <Tabs.TabPane
-                                    tab={values.title}
-                                    key={`${index + 1}`}
-                                    closable={index !== 0}
+        <>
+            <Search
+                options={useGetSite()}
+                onDataSelect={setDataFromComponentA}
+                onWeekValuesSelect={handleWeekValuesSelect}
+                response={(data) => {
+                    console.log(data)
+                }}
+            //handleModalOpen={handleModalOpen}
+            />
+            <div className={style.container_layout}>
+                <>
+                    {panes.map((values, index) => (
+                        <div key={index}>
+                            {index !== 0 && (
+                                <span
+                                    style={{ marginRight: 8 }}
+                                    onClick={() => remove(`${index + 1}`)}
                                 >
-                                    <Form
-                                        addSchedule={addSchedule}
-                                        tourData={tourData}
-                                        dataFromComponentA={dataFromComponentA}
-                                        schedules={schedules}
-                                        scheduleKey={index}
-                                        handleWeekCheckboxChange={(updatedWeek) => handleWeekCheckboxChange(index, updatedWeek)}
-                                        onWeekValuesChange={(selectedWeek) => setWeekValues(selectedWeek)}
-                                        handleUpdatedDate={handleUpdatedDate}
-                                        handleSelectedDateUpdate={handleSelectedDateUpdate}
-                                        handleUpdatedNextDate={handleUpdatedNextDate}
-                                        handleNextDate={handleNextDate}
-                                        setTourData={setTourData}
-                                        handleUpdatedTourData={handleUpdatedTourData}
-                                        //modalVisible={modalVisible}
-                                        onModalClose={handleModalClose}
-                                        selectedSiteAndDomain={dataFromComponentA}
-                                    />
-                                </Tabs.TabPane>
-                            ])
-                        }
-                    </Tabs>
-                </Card>
-            </Col>
-            <div className={style.calendar}>
-                <Card title="Calendar">
-                    <div id="calendario"></div>
-                </Card>
+                                    Cerrar pestaña
+                                </span>
+                            )}
+                            <div className={style.container_form}>
+                                <Form
+                                    addSchedule={addSchedule}
+                                    tourData={tourData}
+                                    dataFromComponentA={dataFromComponentA}
+                                    schedules={schedules}
+                                    scheduleskey={index}
+                                    handleWeekCheckboxChange={(updatedWeek) =>
+                                        handleWeekCheckboxChange(index, updatedWeek)
+                                    }
+                                    onWeekValuesChange={(selectedWeek) => setWeekValues(selectedWeek)}
+                                    handleUpdatedDate={handleUpdatedDate}
+                                    handleSelectedDateUpdate={handleSelectedDateUpdate}
+                                    handleUpdatedNextDate={handleUpdatedNextDate}
+                                    handleNextDate={handleNextDate}
+                                    setTourData={setTourData}
+                                    handleUpdatedTourData={handleUpdatedTourData}
+                                    onModalClose={handleModalClose}
+                                    selectedSiteAndDomain={dataFromComponentA}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </>
+
+                <div className={style.calendar}>
+                    <Card title="Calendar">
+                        <div id="calendario"></div>
+                    </Card>
+                </div>
             </div>
-        </Row>
+        </>
 
 
     )

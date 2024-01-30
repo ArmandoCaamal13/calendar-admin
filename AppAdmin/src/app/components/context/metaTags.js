@@ -5,11 +5,14 @@ export const MetaTagsContext = createContext();
 
 export const MetaTagsProvider = ({ children }) => {
     const [data, setData] = useState();
-    useEffect(async () => {
-        const fetchedData = await GetSeoXMl();
-        setData(fetchedData);
+    useEffect(() => {
+        async function DataFetched() {
+            const fetchedData = await GetSeoXMl();
+            setData(fetchedData);
+        }
+        DataFetched();
     }, []);
-    
+
     return (
         <MetaTagsContext.Provider value={{ data, setData }}>
             {children}

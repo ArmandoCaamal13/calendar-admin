@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans:600&display=swap');
+.sidebar{
+  width: 13rem;
+  //left: -240px;
+  height: 100%;
+  margin-bottom: 100px;
+  background: #fff;
+  transition: all .5s ease;
+}
+
+.name:hover{
+  color: black
+}
+.sidebar .menu-title{
+  font-size: 28px;
+  color: black;
+  line-height: 70px;
+  text-align: center;
+  background: #fff;
+  user-select: none;
+  font-family: 'Montserrat', sans-serif;
+}
+.sidebar .link{
+  display: block;
+  height: 65px;
+  width: 100%;
+  color: black;
+  line-height: 65px;
+  padding-left: 30px;
+  box-sizing: border-box;
+  margin-top: 5rem;
+  border-bottom: 1px solid rgb(137, 136, 136);
+  border-top: 1px solid rgba(255,255,255,.1);
+  border-left: 5px solid transparent;
+  transition: all .5s ease;
+}
+.link:active,.link:hover{
+  border-left: 5px solid #509809;
+  color: white;
+  background-color: #509809;
+}
+.sidebar .link i{
+  font-size: 23px;
+  margin-right: 16px;
+}
+.sidebar .link .name{
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+#check{
+  display: none;
+}
+.label_menu #btn,.label_menu #cancel{
+  position: absolute;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  border: 1px solid #262626;
+  margin: 15px 30px;
+  font-size: 29px;
+  background: #262626;
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  line-height: 45px;
+  transition: all .5s ease;
+}
+.label_menu #cancel{
+  opacity: 0;
+  visibility: hidden;
+}
+#check:checked ~ .sidebar{
+  left: 0;
+}
+#check:checked ~ .label_menu #btn{
+  margin-left: 245px;
+  opacity: 0;
+  visibility: hidden;
+}
+#check:checked ~ .label_menu #cancel{
+  margin-left: 245px;
+  opacity: 1;
+  visibility: visible;
+}
+@media(max-width : 860px){
+  .sidebar{
+    height: auto;
+    width: 70px;
+    left: 0;
+    margin: 100px 0;
+  }
+  .menu-title,#btn,#cancel{
+    display: none;
+  }
+  .name{
+    position: absolute;
+    margin-left: 23px;
+    opacity: 0;
+    visibility: hidden;
+    margin-top:-2px;
+  }
+  .sidebar .link{
+    height: 60px;
+  }
+  .sidebar .link i{
+    margin-left: -10px;
+    margin-top: 15px;
+  }
+  .link:hover {
+    width: 200px;
+    background: inherit;
+  }
+  .sidebar .link:hover .name{
+    opacity: 1;
+    visibility: visible;
+  }
+}

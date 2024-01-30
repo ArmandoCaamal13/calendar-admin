@@ -6,11 +6,11 @@ import { Row, Col, Divider } from 'antd';
 
 const Schedules = () => {
     return(
-        <Row className = {['u-container',style.container].join(" ")}>
-          <Col span = {24}>
+        <div className = {style.container}>
+          
               <Layout />
-          </Col>
-      </Row>
+          
+      </div>
     )
 }
 

@@ -1,0 +1,12 @@
+.main-layout{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 90vh;
+}
+
+.main__login{
+    background: linear-gradient(90deg, #3b7ad6, #78b3b8);
+    width: 100rem;
+    height: 48rem;
+}

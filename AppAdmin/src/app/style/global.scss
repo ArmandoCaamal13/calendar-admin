@@ -3,24 +3,13 @@
     src: url('../../public/fonts/NunitoSans-Regular.ttf');
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
-}
-
 html{
     font-size: 18px;
     font-family: 'nunito-regular';
-    
 }
 body{
-//     height:100%;
-//   margin:0;
-//   display: flex;
-//   flex-direction: column;
-    
+    height:100%;
+    margin:0;    
 }
 .blue{
     background: blue

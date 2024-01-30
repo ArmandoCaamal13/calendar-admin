@@ -1,7 +1,10 @@
 .search{
+    //display: flex;
+    position: static;
+    width: 50%;
     display: flex;
-    width: 100%;
-    align-items: center;
+    justify-content: center;
+    //align-items: center;
     margin: 0 0px 2em 0px;
 }
 .search__input{

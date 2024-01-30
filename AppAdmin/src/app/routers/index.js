@@ -1,49 +1,47 @@
-import  React from 'react';
-import { BrowserRouter,Routes,Route } from 'react-router-dom'
-import AdminTemplate from '../containers/template';
+import React, { useEffect } from 'react';
+import { Route, Routes, BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import DomainsFile from '../pages/domains_file';
-import TemplateLogin from '../pages/login';
 import Schedules from '../pages/schedules';
-import Home from '../pages/home'
-import PrivateRoute  from 'components/PrivateRoute'
+import Home from '../pages/home';
 import PageSchedule from '../pages/schedule/index';
+import Menu from 'components/menu/index';
+import Header from 'components/header/index';
+import './style_routers.scss'
+import LoginComponent from '../pages/login.component';
+import TemplateLogin from '../pages/login/index';
+import AuthService from '../services/auth.service';
+import PrivateRoute from 'components/PrivateRoute/index';
 
 const App = () => {
-    return (
-        <BrowserRouter>
-            <AdminTemplate>
-                <Routes>
-                    <Route  path = "/" element = {
-                            <PrivateRoute>
-                                <div style={{display:'flex',justifyContent:'center'}}>
-                                    <Home />
-                                </div>
-                            </PrivateRoute>
-                        } 
-                    />
-                    <Route path='/create-file' element= { 
-                            <PrivateRoute>
-                                <DomainsFile />
-                            </PrivateRoute> 
-                        } 
-                    />
-                    <Route path='/create-schedule' element= {
-                            <PrivateRoute>
-                                <Schedules />
-                            </PrivateRoute> 
-                        } 
-                    />
-                    <Route path='/refactorizacion-create-schedule' element= {
-                            <PrivateRoute>
-                                <PageSchedule />
-                            </PrivateRoute> 
-                        } 
-                    />
-                    <Route path='/login' element= {<TemplateLogin />} />
-                </Routes>
-            </AdminTemplate>
-        </BrowserRouter>
-    )
-}
+  const location = useLocation();
+  const navigate = useNavigate();
+  // Verifica si la ruta actual es "/login"
+  const isLoginPage = location.pathname === "/login";
+  
 
-export default App
+  useEffect(() => {
+    // Verifica si el usuario esta autenticado
+  const isAuthenticated = AuthService.getCurrentUser();
+    if (!isLoginPage && !isAuthenticated) {
+      navigate("/login");
+    }
+  })
+
+  return (
+    <>
+      {!isLoginPage && <Header />}
+      <div className='main-layout'>
+      {!isLoginPage && <Menu />}
+        <Routes>
+          <Route path="/login" element={<div className='main__login'><TemplateLogin /></div>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/create-file" element={<DomainsFile />} />
+          <Route path="/create-schedule" element={<Schedules />} />
+          <Route path="/refactorizacion-create-schedule" element={<PageSchedule />} />
+        </Routes>
+      </div>
+    </>
+  );
+};
+
+export default App;
