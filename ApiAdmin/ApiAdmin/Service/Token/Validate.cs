@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using ApiAdmin.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ApiAdmin.Service.Token
@@ -44,9 +44,9 @@ namespace ApiAdmin.Service.Token
                 string audienceToken = Config.TOKEN_AUDIENCE;
                 string issuerToken = Config.TOKEN_ISSUER;
                 var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(secretKey));
-               
+
                 SecurityToken securityToken;
-                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
                 TokenValidationParameters validationParameters = new TokenValidationParameters()
                 {
                     ValidAudience = audienceToken,
@@ -59,7 +59,7 @@ namespace ApiAdmin.Service.Token
 
 
                 Thread.CurrentPrincipal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
-                //HttpContext.Current.User = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
+                HttpContext.Current.User = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
 
                 return base.SendAsync(request, cancellationToken);
             }

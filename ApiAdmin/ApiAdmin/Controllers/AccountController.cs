@@ -1,14 +1,19 @@
 ﻿using ApiAdmin.Models.User;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using ApiAdmin.Service.Token;
+using System.Web.Http.Cors;
+using System.Web;
+using System.Threading.Tasks;
 
 namespace ApiAdmin.Controllers
 {
-    [EnableCors()]
-    public class AccountController : ControllerBase
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class AccountController : ApiController
     {
 
         //[AllowAnonymous]
@@ -84,19 +89,19 @@ namespace ApiAdmin.Controllers
 
         private static readonly Dictionary<string, string> ActiveSessions = new Dictionary<string, string>();
 
-        //[AllowAnonymous]
-        //[HttpPost]
-        //[Route("account/login")]
-        //public IActionResult UserLogin([FromBody] UserLogin user)
-        //{
-        //    if (Users.TryGetValue(user.UserName, out string expectedPassword) && expectedPassword == user.Password)
-        //    {
-        //        string token = Guid.NewGuid().ToString();
-        //        ActiveSessions[token] = user.UserName;
-        //        return token
-        //    }
-        //    return Unauthorized();
-        //}
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("account/login")]
+        public IHttpActionResult UserLogin([FromBody] UserLogin user)
+        {
+            if (Users.TryGetValue(user.UserName, out string expectedPassword) && expectedPassword == user.Password)
+            {
+                string token = Guid.NewGuid().ToString();
+                ActiveSessions[token] = user.UserName;
+                return Ok(new {token});
+            }
+            return Unauthorized();
+        }
     }
 
 }
