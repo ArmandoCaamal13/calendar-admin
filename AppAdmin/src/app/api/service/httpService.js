@@ -1,11 +1,10 @@
-import { async } from "regenerator-runtime";
 
 export const fetchCalendar = async (site, domain) => {
     const endpoint = 'cdn/calendar';
     const queryParams = `site=${site}&domain=${domain}`;
 
     try {
-        const response = await fetch(`http://mvc.ebcal.dtraveller.com/${endpoint}?${queryParams}`);
+        const response = await fetch(`https://localhost:7170/${endpoint}?${queryParams}`);
         if (!response) {
             throw new Error('Network response was not ok');
         }
@@ -22,7 +21,7 @@ export const updateCalendar = async (site, domain, updatedSchedules) => {
     const queryParams = `site=${site}&domain=${domain}`;
 
     try {
-        const response = await fetch('http://mvc.ebcal.dtraveller.com/cdn/calendar?site=507&domain=garrafon.com', {
+        const response = await fetch(`https://localhost:7170/${endpoint}?${queryParams}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

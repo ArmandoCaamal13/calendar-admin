@@ -22,7 +22,7 @@ const Search = ({ options, onDataSelect, handleModalOpen }) => {
     return (
         <div className={style.search}>
             <AutoComplete
-                style={{ width: '50%' }}
+                style={{ width: '80%' }}
                 dropdownClassName="certain-category-search-dropdown"
                 notFoundContent="Not Found"
                 options={options.map((option) => ({

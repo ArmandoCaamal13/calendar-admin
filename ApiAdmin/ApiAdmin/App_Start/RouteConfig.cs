@@ -1,24 +1,16 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-//using System.Web
-//using System.Web.Routing;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using System.Web.Mvc;
 
-//namespace ApiAdmin
-//{
-//    public class RouteConfig
-//    {
-//        public static void RegisterRoutes(RouteCollection routes)
-//        {
-//            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-//            routes.MapRoute(
-//                name: "Default",
-//                url: "{controller}/{action}/{id}",
-//                defaults: new { action = "Index", id = UrlParameter.Optional }
-//            );
-//        }
-//    }
-//}
-
+namespace ApiAdmin
+{
+    public class RouteConfig
+    {
+        public static void Configure(IEndpointRouteBuilder endpoints)
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+        }
+    }
+}

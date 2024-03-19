@@ -60,7 +60,7 @@ const CardView = () => {
 
                 updatedSite.Page = updatedPages
 
-                const response = await fetch(`http://mvc.garrafon.com/ajax/guardarjson`, {
+                const response = await fetch(`https://localhost:7170/cdn/guardarjson`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const CardView = () => {
     //const visiblePage = pages.slice(startIndex, endIndex);
 
     let tabPanes = null
-
+    
     if (jsonData) {
         tabPanes = jsonData.Root.Site.map((site) => (
             <TabPane tab={`Site in ${site.Name}`} key={site.Id}>

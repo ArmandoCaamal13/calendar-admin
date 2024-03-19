@@ -1,0 +1,13 @@
+.container_main{
+    margin-left: 15rem;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .container_main{
+      margin-left: 0;
+    }
+  }

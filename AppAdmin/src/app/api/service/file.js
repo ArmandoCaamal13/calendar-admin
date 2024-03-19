@@ -4,11 +4,11 @@ import "regenerator-runtime/runtime";
 const GetSeoXMl = async () => {
     //return SEO.Root.Site
     return new Promise((resolve, reject) => {
-        fetch(`http://mvc.garrafon.com/ajax/seoxml`, {
+        fetch(`https://localhost:7170/cdn/seoxml`, {
             // hostname: "mvc.garrafon.com",
             mode: "cors",
             credentials: "same-origin",
-            method: 'POST',
+            method: 'GET',
             headers: {
                 // "Content-Type": "application/xml; charset=utf-8"
             },
@@ -58,7 +58,7 @@ const SaveSeoXMl = async ({newData}) => {
       redirect: 'follow'
     };
     
-    fetch("http://mvc.garrafon.com/ajax/guardarjson", requestOptions)
+    fetch("https://localhost:7170/cdn/guardarjson", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));

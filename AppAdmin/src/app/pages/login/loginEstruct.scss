@@ -4,12 +4,11 @@
   margin: 0;
 }
 .container__login{
-  height: auto;
-  width: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  margin-left: 25rem;
-  margin-top: 7rem;
+  justify-content: center;  
+  align-items: center;
 }
 
 .login-box {
@@ -19,20 +18,9 @@
   grid-area: logo;
 }
 
-@media (max-width: 900px) {
-  .container-login {
-    height: 100%;
+@media (max-width: 768px) {
+  .container__login{
     width: 100%;
-    background: white;
-  }
-
-  .login-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-  .logo-box {
-    grid-area: logo;
+    height: 94%;
   }
 }

@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react'
-//import Input from 'components/input'
+import React, { useCallback, useEffect, useState, Fragment } from 'react'
 import style from './style.module.scss'
-import { Checkbox, Divider, Tag, Input, Select, Entry, Tooltip, Button, Row, Col, DatePicker, Card, AutoComplete, Modal } from 'antd';
-import { PlusOutlined, DeleteFilled, UserOutlined } from '@ant-design/icons';
+import { Checkbox, Divider, DatePicker } from 'antd';
 import EditableTagGroup from './tag/tagContainer'
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import Modal from 'react-bootstrap/Modal';
+import classNames from 'classnames';
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const defaultCheckedList = [];
-
 const Form = ({
     initialDates,
     tourData,
@@ -20,11 +19,7 @@ const Form = ({
     handleUpdatedDate,
     handleSelectedDateUpdate,
     handleUpdatedNextDate,
-    handleNextDate,
     dataFromComponentA,
-    handleUpdatedTourData,
-    modalVisible,
-    onModalClose,
     selectedSiteAndDomain,
 }) => {
 
@@ -34,7 +29,6 @@ const Form = ({
     const [selectedWeek, setSelectedWeek] = useState({});
     const [selectedDate, setSelectedDates] = useState(initialDates || []);
     const [selectedNextDates, setSelectedNextDates] = useState([]);
-    const [showComponents, setShowComponents] = useState(true);
     const [seletctedWeekDate, setSelectedWeekDate] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editModal, setEditModal] = useState(false);
@@ -42,26 +36,14 @@ const Form = ({
     const [newLocation, setNewLocation] = useState('');
     const [updatedTour, setUpdatedTour] = useState('');
     const [updatedLocation, setUpdatedLocation] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
-    const showModal = () => {
-        setIsModalOpen(true);
-    }
+    const [show, setShow] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
-    const EditModal = () => {
-        setEditModal(true)
-    }
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-    const handleok = () => {
-        setIsModalOpen(true);
-    }
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    }
-    const editCancel = () => {
-        setEditModal(false)
-    }
+    const handleCloseEdit = () => setShowEdit(false);
+    const handleShowEdit = () => setShowEdit(true);
 
     const handleTourSelect = (value) => {
         //console.log('Tour selected:', value);
@@ -75,10 +57,8 @@ const Form = ({
 
     const handleLocationSelect = (value) => {
         const selectedTourData = tourData.find((item) => item.Tour == selectedTour);
-
         if (selectedTourData) {
             const selectedLocationData = tourData.find((item) => item.Tour === selectedTour && item.Location === value);
-
             if (selectedLocationData) {
                 const updatedWeek = selectedLocationData.Week || {};
                 const updatedDates = selectedLocationData.Date || [];
@@ -90,36 +70,23 @@ const Form = ({
                 setSelectedNextDates(dates);
                 handleWeekCheckboxChange(updatedWeek);
                 handleUpdatedDate(updatedDates)
-                //handleNextDate(dates)
-
-                //console.log('Date values:', updatedDates);
-                //console.log('ToDate values:', selectedLocationData.ToDate || '')
-                //console.log('Week values:', updatedWeek);
-                //console.log('NextDates values:', dates.startDate);
-                //console.log('NextDates values:', dates.endDate);
-                //console.log('NextDates values:', dates.week);
             } else {
                 console.error(`No se encontró información para la ubicación ${value}`);
             }
         } else {
             console.error(`No se encontró información para el Tour ${selectedTour}`);
-            // Puedes realizar alguna acción adicional si no se encuentra información
         }
-
-        //const selectedLocationData = tourData.map((item) => item.Location === value);        
     };
 
     const handleCheckboxChange = (checkedValues) => {
         setSelectedWeek((prevWeek) => {
             const updatedWeek = { ...prevWeek };
-            //console.log('Enviando cambios de checkbox a Layout: ', updatedWeek);
             handleWeekCheckboxChange(updatedWeek);
             return updatedWeek;
         });
 
         setSelectedNextDates((prevNextDates) => {
             const [currentNextDate] = prevNextDates.length > 0 ? prevNextDates : [{}];
-
             const updatedNextDates = {
                 startDate: currentNextDate.startDate || '',
                 endDate: currentNextDate.endDate || '',
@@ -127,22 +94,16 @@ const Form = ({
                     ...currentNextDate.week,
                 },
             };
-
             plainOptions.forEach((day) => {
                 updatedNextDates.week[day] = checkedValues.includes(day);
             });
-
-            //console.log('Nuevos valores de NextDates:', updatedNextDates);
             handleUpdatedNextDate(updatedNextDates);
             return [updatedNextDates];
         });
-
     };
     const renderTourOptions = () => {
         if (Array.isArray(tourData)) {
-            // Extraer los valores de Tour de tourData y eliminar duplicados
             const tourOptions = Array.from(new Set(tourData.map((item) => item.Tour)));
-
             return tourOptions.map((tour) => ({ value: tour }));
         } else {
             return [];
@@ -151,33 +112,15 @@ const Form = ({
 
     const renderLocationOptions = () => {
         if (Array.isArray(tourData)) {
-            // Filtrar las ubicaciones según el Tour seleccionado
             const filteredLocations = tourData
                 .filter((item) => item.Tour === selectedTour)
                 .flatMap((item) => item.Location);
-            // Eliminar duplicados y formatear para el AutoComplete
             const locationOptions = Array.from(new Set(filteredLocations)).map((location) => ({ value: location }));
-
             return locationOptions;
         } else {
             return [];
         }
     };
-
-    const handleDeleteSelected = (newDates) => {
-        setSelectedNextDates(newDates);
-        setSelectedWeekDate({});
-    };
-
-    // const handleSelectedDatesChange = newDates => {
-    //     setSelectedDates(prevSelectedDates => {
-    //         const uniqueNewDates = newDates.filter(date => !prevSelectedDates.includes(date));
-    //         const updatedSelectedDates = [...prevSelectedDates, ...uniqueNewDates];
-    //         console.log(updatedSelectedDates)
-    //         handleSelectedDateUpdate(updatedSelectedDates);
-    //         return updatedSelectedDates;
-    //     });
-    // };
 
     const handleSelectedDatesChange = useCallback(updatedDates => {
         setSelectedDates(updatedDates);
@@ -189,18 +132,11 @@ const Form = ({
             const { startDate, endDate } = newDates[0];
             const formattedStartDate = moment(startDate).format("YYYY/MM/DD");
             const formattedEndDate = moment(endDate).format("YYYY/MM/DD");
-
             const updatedNextDate = {
                 startDate: formattedStartDate,
                 endDate: formattedEndDate,
-                //week: { ...seletctedWeekDate },
             };
-
             setSelectedNextDates((prevNextDates) => [...prevNextDates, updatedNextDate]);
-            //console.log('Start Date:', formattedStartDate);
-            //console.log('End Date:', formattedEndDate);
-            //console.log('End Date:', seletctedWeekDate);
-
         } else {
             console.log('No dates selected');
         }
@@ -215,25 +151,19 @@ const Form = ({
             const tourIndex = tourData.findIndex(
                 (tour) => tour.Tour === selectedTour && tour.Location === selectedLocation
             );
-
             if (tourIndex !== -1) {
                 tourData[tourIndex].ToDate = selectedToDate;
                 tourData[tourIndex].Week = selectedWeek;
                 tourData[tourIndex].Date = selectedDate;
                 tourData[tourIndex].NextDates = selectedNextDates;
-
-                // Obtén las ubicaciones únicas de tourData
                 const uniqueLocations = Array.from(new Set(tourData.map((tour) => tour.Location)));
-
                 const updatedSchedules = {
                     ByTour: uniqueLocations,
                     Dates: tourData,
                 };
-
                 const site = dataFromComponentA.site;
                 const domain = dataFromComponentA.domain;
-
-                fetch(`http://mvc.ebcal.dtraveller.com/cdn/calendar?site=${site}&domain=${domain}`, {
+                fetch(`https://localhost:7170/cdn/calendar?site=${site}&domain=${domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -255,7 +185,6 @@ const Form = ({
                             setSelectedDates([]);
                             setSelectedNextDates([]);
                             setSelectedWeekDate({});
-                            //console.log("JSON guardado exitosamente:", data);
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -324,10 +253,7 @@ const Form = ({
                     ByTour: uniqueLocations,
                     Dates: updatedTourData
                 }
-                // Utiliza la información de site y domain según sea necesario
-                //console.log(`Site: ${site}, Domain: ${domain}`);
-
-                fetch(`http://mvc.ebcal.dtraveller.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                fetch(`https://localhost:7170/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -384,18 +310,15 @@ const Form = ({
             const index = tourData.findIndex(item => item.Tour == valueTour && item.Location == selectedLocation);
             console.log(index)
             if (index !== -1) {
-                // Modificar el valor de Tour en el objeto encontrado
                 tourData[index].Tour = updatedTour;
                 tourData[index].Location = updatedLocation;
-
                 const updatedTourData = [...tourData];
                 const uniqueLocations = Array.from(new Set(tourData.map((tour) => tour.Location)));
                 const updatedSchedules = {
                     ByTour: uniqueLocations,
                     Dates: updatedTourData
                 }
-                //console.log(updatedSchedules)
-                fetch(`http://mvc.ebcal.dtraveller.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                fetch(`https://localhost:7170/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -431,11 +354,9 @@ const Form = ({
                             title: 'Error interno del servidor',
                             text: 'Por favor intentalo más tarde'
                         });
-                        //console.error("Error al guardar", error);
                     })
             }
         } else {
-            //console.log("No se han agregado los valores que se reemplazaran");
             Swal.fire({
                 icon: 'error',
                 title: 'No se han agregado los nuevos valores',
@@ -469,7 +390,7 @@ const Form = ({
                         ByTour: uniqueLocations,
                         Dates: tourData
                     }
-                    fetch(`http://mvc.ebcal.dtraveller.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                    fetch(`https://localhost:7170/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -479,7 +400,6 @@ const Form = ({
                         .then(response => response.json())
                         .then(data => {
                             if (data && data) {
-
                                 setSelectedTour('');
                                 setSelectedLocation('');
                                 setSelectedToDate('');
@@ -487,9 +407,6 @@ const Form = ({
                                 setSelectedDates([]);
                                 setSelectedNextDates([]);
                                 setSelectedWeekDate({});
-
-                                console.log(updatedSchedules)
-                                console.log(tourData)
                             }
                         })
                 } else {
@@ -512,90 +429,316 @@ const Form = ({
     return (
         <React.Fragment>
             <Modal
-                title="Agregar Nuevo Tour y Locación"
-                open={isModalOpen}
-                onCancel={handleCancel}
-                onOk={handleAddNew}
+                show={show}
+                onHide={handleClose}
             >
-                <div className={style.modal__content}>
-
-                    <Input size="middle" value={selectedSiteAndDomain?.site} disabled />
-                    <Input size="middle" value={selectedSiteAndDomain?.domain} disabled />
-                    {/* <AutoComplete
-                        size="large"
-                        value={newTour}
-                        onChange={(value) => setNewTour(value)}
-                    > */}
-
-                    <AutoComplete
-                        value={newTour}
-                        onChange={(value) => setNewTour(value)}
-                        style={{ width: '100%' }}
-                    >
-                        <Input size="middle" placeholder="Nueva clave Tour" />
-                    </AutoComplete>
-                    <AutoComplete
-                        value={newLocation}
-                        onChange={(value) => setNewLocation(value)}
-                        style={{ width: '100%' }}
-                    >
-                        <Input size="middle" placeholder="Nueva clave locacion" />
-                    </AutoComplete>
+                <div className="isolate bg-white sm:py-8 lg:px-8">
+                    <div className="mx-auto max-w-2xl text-center">
+                        <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+                            Añadir nuevo Tour & nueva Locacion
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2">
+                        <div>
+                            <label htmlFor="site" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Sitio
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="site"
+                                    id="site"
+                                    value={selectedSiteAndDomain?.site}
+                                    disabled
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="domain" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Dominio
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="domain"
+                                    id="domain"
+                                    value={selectedSiteAndDomain?.domain}
+                                    disabled
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:col-span-2">
+                            <label htmlFor="newTour" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Nuevo Tour
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="newTour"
+                                    id="newTour"
+                                    value={newTour}
+                                    onChange={(value) => setNewTour(value.target.value)}
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:col-span-2">
+                            <label htmlFor="newLocation" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Nueva Locacion
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="newLocation"
+                                    id="newLocation"
+                                    value={newLocation}
+                                    onChange={(value) => setNewLocation(value.target.value)}
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-10">
+                            <button
+                                onClick={handleClose}
+                                className="block w-full rounded-md bg-white px-3.5 py-2.5 text-center text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                        <div className="mt-10">
+                            <button
+                                onClick={handleAddNew}
+                                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Añadir
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </Modal>
             <Modal
-                title="Editar Tour y Locación"
-                open={editModal}
-                onCancel={editCancel}
-                onOk={handleEdit}
+                show={showEdit}
+                onHide={handleCloseEdit}
             >
-                <div className={style.modal__content}>
-                    <h3></h3>
-                    <Input size="middle" value={selectedSiteAndDomain?.site} disabled />
-                    <Input size="middle" value={selectedSiteAndDomain?.domain} disabled />
-                    <AutoComplete
-                        value={updatedTour}
-                        onChange={(value) => setUpdatedTour(value)}
-                        style={{ width: '100%' }}
-                    >
-                        <Input size="middle" placeholder={selectedTour} />
-                    </AutoComplete>
-                    <br />
-                    <AutoComplete
-                        value={updatedLocation}
-                        onChange={(value) => setUpdatedLocation(value)}
-                        style={{ width: '100%' }}
-                    >
-                        <Input size="middle" placeholder={selectedLocation} />
-                    </AutoComplete>
+                <div className="isolate bg-white sm:py-8 lg:px-8">
+                    <div className="mx-auto max-w-2xl text-center">
+                        <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+                            Modificar Tour & Locacion
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2">
+                        <div>
+                            <label htmlFor="site" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Sitio
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="site"
+                                    id="site"
+                                    value={selectedSiteAndDomain?.site}
+                                    disabled
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="domain" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Dominio
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="domain"
+                                    id="domain"
+                                    value={selectedSiteAndDomain?.domain}
+                                    disabled
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:col-span-2">
+                            <label htmlFor="editTour" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Tour
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="editTour"
+                                    id="editTour"
+                                    value={updatedTour}
+                                    placeholder={selectedTour}
+                                    onChange={(value) => setUpdatedTour(value.target.value)}
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:col-span-2">
+                            <label htmlFor="editLocation" className="block text-sm font-semibold leading-6 text-gray-900">
+                                Locacion
+                            </label>
+                            <div className="mt-2.5">
+                                <input
+                                    type="text"
+                                    name="editLocation"
+                                    id="editLocation"
+                                    value={updatedLocation}
+                                    placeholder={selectedLocation}
+                                    onChange={(value) => setUpdatedLocation(value.target.value)}
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-10">
+                            <button
+                                onClick={handleCloseEdit}
+                                className="block w-full rounded-md bg-white px-3.5 py-2.5 text-center text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                        <div className="mt-10">
+                            <button
+                                onClick={handleEdit}
+                                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Modificar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </Modal>
-
             <div className={style.form}>
                 <div className={style.dates}>
-                    <Col span={7}>
-                        <AutoComplete
-                            value={selectedTour}
-                            options={renderTourOptions()}
-                            onSelect={handleTourSelect}
-                        >
-                            <Input size="large" placeholder="Tour" />
-                        </AutoComplete>
+                    <div className={style.input_form}>
+                        <Listbox value={selectedTour} onChange={handleTourSelect}>
+                            {({ open }) => (
+                                <>
+                                    <div className='relative'>
+                                        <Listbox.Button className="relative w-full cursor-default rounded-md border-4 bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                            <span className='flex items-center'>
+                                                <span className='ml-3 block truncate'>Tour: {selectedTour}</span>
+                                            </span>
+                                            <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2'>
+                                                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </span>
+                                        </Listbox.Button>
+                                        <Transition
+                                            show={open}
+                                            as={Fragment}
+                                            leave="transition ease-in duration-100"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                {renderTourOptions().map((tour) => (
+                                                    <Listbox.Option
+                                                        className={({ active }) =>
+                                                            classNames(
+                                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                                                'relative cursor-default select-none py-2 pl-3 pr-9'
+                                                            )
+                                                        }
+                                                        value={tour.value}
+                                                    >
+                                                        {({ selected, active }) => (
+                                                            <>
+                                                                <div className="flex items-center">
+                                                                    <span
+                                                                        className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+                                                                    >
+                                                                        {tour.value}
+                                                                    </span>
+                                                                </div>
 
-                    </Col>
-                    <Col span={7} offset={1}>
-                        <AutoComplete
-                            value={selectedLocation}
-                            options={renderLocationOptions()}
-                            onSelect={handleLocationSelect}
+                                                                {selected ? (
+                                                                    <span
+                                                                        className={classNames(
+                                                                            active ? 'text-white' : 'text-indigo-600',
+                                                                            'absolute inset-y-0 right-0 flex items-center pr-4'
+                                                                        )}
+                                                                    >
+                                                                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                                    </span>
+                                                                ) : null}
+                                                            </>
+                                                        )}
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Transition>
+                                    </div>
+                                </>
+                            )}
+                        </Listbox>
+                    </div>
+                    <div className={style.input_form}>
+                        <Listbox value={selectedLocation} onChange={handleLocationSelect}>
+                            {({ open }) => (
+                                <>
+                                    <div className='relative'>
+                                        <Listbox.Button className="relative w-full cursor-default rounded-md border-4 bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                            <span className='flex items-center'>
+                                                <span className='ml-3 block truncate'>Locacion: {selectedLocation}</span>
+                                            </span>
+                                            <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2'>
+                                                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </span>
+                                        </Listbox.Button>
+                                        <Transition
+                                            show={open}
+                                            as={Fragment}
+                                            leave="transition ease-in duration-100"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                {renderLocationOptions().map((location) => (
+                                                    <Listbox.Option
+                                                        key={location.value}
+                                                        className={({ active }) =>
+                                                            classNames(
+                                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                                                'relative cursor-default select-none py-2 pl-3 pr-9'
+                                                            )
+                                                        }
+                                                        value={location.value}
+                                                    >
+                                                        {({ selected, active }) => (
+                                                            <>
+                                                                <div className="flex items-center">
+                                                                    <span
+                                                                        className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
+                                                                    >
+                                                                        {location.value}
+                                                                    </span>
+                                                                </div>
 
-                        >
-                            <Input size="large" placeholder="Location" />
-                        </AutoComplete>
-                    </Col>
-                    <Col span={7} offset={1}>
-                        <Input
-                            size="large"
+                                                                {selected ? (
+                                                                    <span
+                                                                        className={classNames(
+                                                                            active ? 'text-white' : 'text-indigo-600',
+                                                                            'absolute inset-y-0 right-0 flex items-center pr-4'
+                                                                        )}
+                                                                    >
+                                                                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                                    </span>
+                                                                ) : null}
+                                                            </>
+                                                        )}
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Transition>
+                                    </div>
+                                </>
+                            )}
+                        </Listbox>
+                    </div>
+                    <div className={style.input_form}>
+                        <input
                             type="number"
                             placeholder="To Date"
                             value={selectedToDate}
@@ -606,58 +749,39 @@ const Form = ({
                                     setSelectedToDate(_ToDate);
                                 }
                             }}
+                            className="block w-full rounded-md border-2 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
-                    </Col>
-                    <br />
+                    </div>
                 </div>
                 <fieldset className={style.week}>
                     <legend className={style.week__leyend}>Dates</legend>
-                    {/* <div className={style.span}>
-                            <i class="fas fa-info"></i>
-                            <span className={style.note}>
-                                Las fechas agregadas no estaran disponibles
-                            </span>
-                            <span className={style.note_date}>
-                                año - mes - dia
-                            </span>
-                        </div> */}
                     <div>
                         <EditableTagGroup
                             initialDates={selectedDate}
                             changesDate={handleSelectedDatesChange}
                         />
                         <Divider />
-                        <CheckboxGroup
-                            options={plainOptions}
-                            value={Object.keys(selectedWeek).filter((day) => selectedWeek[day])}
-                            onChange={(checkedValues) => {
-                                setSelectedWeek((prevWeek) => {
-                                    const updatedWeekCopy = { ...prevWeek };
-
-                                    plainOptions.forEach((day) => {
-                                        updatedWeekCopy[day] = checkedValues.includes(day);
+                        <div className={style.checkboxs}>
+                            <CheckboxGroup
+                                options={plainOptions}
+                                value={Object.keys(selectedWeek).filter((day) => selectedWeek[day])}
+                                onChange={(checkedValues) => {
+                                    setSelectedWeek((prevWeek) => {
+                                        const updatedWeekCopy = { ...prevWeek };
+                                        plainOptions.forEach((day) => {
+                                            updatedWeekCopy[day] = checkedValues.includes(day);
+                                        });
+                                        return updatedWeekCopy;
                                     });
-
-                                    return updatedWeekCopy;
-
-                                });
-
-                                handleCheckboxChange(checkedValues);
-                            }}
-                        />
+                                    handleCheckboxChange(checkedValues);
+                                }}
+                            />
+                        </div>
                     </div>
                 </fieldset>
-
                 <fieldset className={style.week} >
-
                     <legend className={style.week__leyend}>Week</legend>
                     <div>
-                        {/* <div className={style.span}>
-                            <i class="fas fa-info"></i>
-                            <span className={style.note}>
-                                Selecciona el rango de fechas para modificar
-                            </span>
-                        </div> */}
                         <DatePicker.RangePicker
                             onChange={(dates, ranger) => {
                                 const newDates = selectedNextDates.length > 0 ? [...selectedNextDates] : [{}];
@@ -678,11 +802,9 @@ const Form = ({
                         <Divider />
                         <CheckboxGroup
                             options={plainOptions}
-                            //value={Object.keys(selectedWeek).filter((day) => selectedWeek[day])}
                             onChange={(checkedValues) => {
                                 setSelectedWeekDate((prevWeek) => {
                                     const updatedWeekCopy = { ...prevWeek };
-
                                     plainOptions.forEach((day) => {
                                         updatedWeekCopy[day] = checkedValues.includes(day);
                                     });
@@ -693,19 +815,14 @@ const Form = ({
                         />
                     </div>
                 </fieldset>
-                <div className={style.btn_wrap}>
-                    <span className={style.span}></span>
-                    <div className={style.container_btn}>
-                        <button onClick={handleSave}><i className="icons fa-solid fa-floppy-disk"></i></button>
-                        <button onClick={showModal}><i className="icons fa-solid fa-plus"></i></button>
-                        <button onClick={EditModal}><i className="icons fa-solid fa-pen-to-square"></i></button>
-                        <button onClick={handleDelete}><i className="icons fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
             </div>
-
+            <div className={style.btn_wrap}>
+                <button onClick={handleSave}><i className="icons fa-solid fa-floppy-disk"></i></button>
+                <button onClick={handleShow}><i className="icons fa-solid fa-plus"></i></button>
+                <button onClick={handleShowEdit}><i className="icons fa-solid fa-pen-to-square"></i></button>
+                <button onClick={handleDelete}><i className="icons fa-solid fa-trash"></i></button>
+            </div>
         </React.Fragment>
     )
 }
-
 export default Form
