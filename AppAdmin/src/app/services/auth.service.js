@@ -1,18 +1,37 @@
 import axios from "axios";
 
-const API_URL = "https://localhost:7170/api/auth/";
+const API_URL = "https://localhost:7170/api/v1/autheticate/";
 
 class AuthService {
-    async login(username, password){
+    async login(email, password){
+
+        // let data = JSON.stringify({ email, password });
+        // let config = {
+        //     method: 'post',
+        //     url: API_URL + "login",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     data: data
+        // };
+
+        // axios.request(config)
+        // .then((response) => {
+        //     sessionStorage.setItem("token", JSON.stringify(response.data.accessToken))
+        //     console.log(JSON.stringify(response.data))
+        // })
+        // .catch((error) => {
+        //     console.log(error)
+        // })
         const response = await axios
             .post(API_URL + "login", {
-                username,
+                email,
                 password,
             });
-        if (response.data.accessToken) {
-            sessionStorage.setItem("token", JSON.stringify(response.data.accessToken));
+        if (response.data.access) {
+            sessionStorage.setItem("token", JSON.stringify(response.data.access));
         }
-        return response.data;
+        return response;
     }
 
     logout(){

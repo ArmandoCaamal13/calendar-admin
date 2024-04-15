@@ -1,13 +1,50 @@
 .container_tabs{
-    width: 90%;
-    height: 70%;
-    margin: 5rem  3rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  //background-color: red;
+  flex-wrap: wrap;
 }
 
+.container_cards{
+  height: 82%;
+  width: 85%;
+  //background-color: blue;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  gap: 5rem;
+  overflow-y: scroll;
+}
+
+.container_pagination{
+  width: 85%;
+  height: 11%;
+  //background-color: aqua;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_content{
+  margin: 1rem;
+}
+
+.lenguaje{
+  //background-color: yellow;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 @media (max-width: 768px) {
     .container_tabs{
-      height: 90%;
+      height: 100%;
       width: 100%;
       margin: 0;
       overflow: scroll;

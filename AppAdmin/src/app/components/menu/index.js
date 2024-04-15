@@ -62,8 +62,8 @@ export default function Sidebar() {
                     </span>
                 </button>
                 {isMobileMenuOpen && (
-                    <div className='z-10 fixed inset-0 bg-black bg-opacity-50' onClick={() => setIsMobileMenuOpen(false)}>
-                        <div className='fixed top-0 left-0 bottom-0 bg-neutral-900 w-60 p-3 text-white'>
+                    <div className='z-10 fixed inset-0 bg-black bg-opacity-50 jus' onClick={() => setIsMobileMenuOpen(false)}>
+                        <div className='flex flex-col top-0 left-0 bottom-0 bg-neutral-900 w-60 h-100 p-3 text-white'>
                             <div className='flex items-center gap-2 px-1 py-3'>
                                 <FcBullish fontSize={24} />
                                 <span className='text-neutral-180 text-lg'>Calendar</span>
@@ -73,10 +73,10 @@ export default function Sidebar() {
                                     <SidebarLink key={item.key} item={item} />
                                 ))}
                             </div>
-                            <div className='flex flex-col gap-0.5 pt-2 border-t border-neutral-700'>
-                                {LINKS_BOTTOM.map((item) => (
+                            <div className='flex flex-col gap-0.5 pt-2 border-t border-neutral-700 '>
+                                {/* {LINKS_BOTTOM.map((item) => (
                                     <SidebarLink key={item.key} item={item} />
-                                ))}
+                                ))} */}
                                 <div
                                     onClick={handleLogout}
                                     className={classNames(' text-red-500 cursor-pointer', linkClasses)}

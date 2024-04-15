@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import style from './style.module.scss';
+import style from './style.module.scss'
 import * as JsonService from "../../api/service/JsonService";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Pagination from "components/pagination/index";
 
@@ -45,14 +49,16 @@ const DomainsFile = () => {
     const [jsonData, setJsonData] = useState(null);
     const [selectedSiteId, setSelectedSiteId] = useState(null);
     const [value, setValue] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
+    const [itemsPerPage] = useState(4);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [open, setOpen] = useState(1);
+
+    const handleOpen = (value) => setOpen(open == value ? 0 : value);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const [totalItems, setTotalItems] = useState(0);
-    const [itemsPerPage] = useState(6);
-    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,48 +88,75 @@ const DomainsFile = () => {
     return (
         <>
             <div className={style.container_tabs}>
-                <Box sx={{ width: '100%' }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs
-                            value={value}
-                            onChange={handleChange}
-                            aria-label="basic tabs example"
-                        >
+                <div className={style.container_cards}>
+                    <div className={style.lenguaje}>
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                    {jsonData && jsonData.Root.Site.map((site) => (
+                                        <Tab label={`Site in ${site.Name}`} key={site.Id} {...a11yProps(0)} />
+                                    ))}
+                                </Tabs>
+                            </Box>
                             {jsonData && jsonData.Root.Site.map((site, index) => (
-                                <Tab label={site.Name} {...a11yProps(index)} key={site.Id} />
-                            ))}
-                        </Tabs>
-                    </Box>
-
-                    {jsonData && jsonData.Root.Site.map((site, index) => (
-                        <CustomTabPanel value={value} index={index} key={site.Id}>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 justify-between">
-                                {site.Page && site.Page.slice((currentPage - 1) * 6, currentPage * 6).map(page => (
-                                    <div className="max-w-sm rounded overflow-hidden shadow-lg" key={page.Id_page}>
-                                        <div className="px-6 py-4">
-                                            <div className="font-bold text-xl mb-2">{page.Title}</div>
-                                            <p className="text-gray-700 text-base">
-                                                {page.Keywords}
-                                            </p>
-                                        </div>
-                                        <div className="px-4 pt-2 pb-2">
-                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                                <CustomTabPanel value={value} index={index} key={site.Id}>
+                                    <div className="container">
+                                        <div className="row">
+                                            {site.Page && site.Page.slice((currentPage - 1) * 4, currentPage * 4).map(page => (
+                                                <div className="col-md-6">
+                                                    <div className="card mb-3">
+                                                        <h5 className="card-header">{page.Url}</h5>
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">{page.Title}</h5>
+                                                            <div className={style.card_content}>
+                                                                <Accordion>
+                                                                    <AccordionSummary
+                                                                        expandIcon={<ArrowDownwardIcon />}
+                                                                        aria-controls="panel1-content"
+                                                                        id="panel1-header"
+                                                                    >
+                                                                        <Typography>Accordion 1</Typography>
+                                                                    </AccordionSummary>
+                                                                    <AccordionDetails>
+                                                                            <fieldset className="border p-2">
+                                                                                <legend className="float-none w-auto">Keywords</legend>
+                                                                                <Typography>
+                                                                                    {page.Keywords}
+                                                                                </Typography>
+                                                                            </fieldset>
+                                                                        <Typography>
+                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                                                                            malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                                                        </Typography>
+                                                                        <Typography>
+                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                                                                            malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                                                        </Typography>
+                                                                    </AccordionDetails>
+                                                                </Accordion>
+                                                            </div>
+                                                            <a href="#" className="btn btn-primary">Go somewhere</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                            <Pagination
-                                totalItems={totalItems}
-                                itemsPerPage={itemsPerPage}
-                                currentPage={currentPage}
-                                onPageChange={handlePageChange}
-                            />
-                        </CustomTabPanel>
-                    ))}
-                </Box>
+                                </CustomTabPanel>
+                            ))}
+                        </Box>
+                    </div>
+                </div>
+                <div className={style.container_pagination}>
+                    <Pagination
+                        totalItems={totalItems}
+                        itemsPerPage={itemsPerPage}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
             </div>
+            {/* <CardView/> */}
         </>
     )
 }

@@ -42,7 +42,8 @@ export default function MenuNavbar() {
           {showNavbar ? (
             <HiOutlineX className='text-3xl text-gray-800' />
           ) : (
-            <HiOutlineMenu className='text-3xl text-gray-800' />
+            // <HiOutlineMenu className='text-3xl text-gray-800' />
+            null
           )}
         </button>
         {/* Barra de navegación */}
@@ -102,18 +103,18 @@ export default function MenuNavbar() {
         <div className='md:hidden absolute top-15 left-0 w-full z-10' >
           <div className='bg-white shadow-md p-2'>
             <div className='flex flex-col gap-5'>
-              <NavLink
+              {/* <NavLink
                 to='/profile'
                 className='rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200'
               >
-                Your Profile
+                Your Profiles
               </NavLink>
               <div
                 onClick={handleLogout}
                 className='rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200'
               >
-                Sign out
-              </div>
+                Sign Out
+              </div> */}
             </div>
           </div>
         </div>

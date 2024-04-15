@@ -7,38 +7,23 @@ import * as CryptoJS from 'crypto-js';
 
 const TemplateLogin = () => {
   const [showPassword, setShowPassword] = useState(true);
-  const [form, setForm] = useState({
-    password: '',
-    username: '',
-  });
+  // const [form, setForm] = useState({
+  //   password: '',
+  //   username: '',
+  // });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
-  const secretKey = '1234567890123456';
-
-  const encryptValue = (value) => {
-    return CryptoJS.AES.encrypt(value, secretKey).toString();
-  };
-
-  const decryptValue = (encryptedValue) => {
-    const bytes = CryptoJS.AES.decrypt(encryptedValue, secretKey);
-    return bytes.toString(CryptoJS.enc.Utf8);
-  };
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const sanitizedValue = sanitizeInput(value);
-    setForm((prevState) => ({ ...prevState, [name]: sanitizedValue }));
-  };
-
-  const sanitizeInput = (value) => {
-    const sanitizedValue = value.replace(/[<>\\/]/g, '');
-    return sanitizedValue;
+    setForm((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSumbit = async () => {
-    if (form.username === '' || form.password === '') {
+    if (email === '' || password === '') {
       Swal.fire({
         icon: 'error',
         title: 'Ingresa las credenciales correctas',
@@ -48,19 +33,8 @@ const TemplateLogin = () => {
       });
     } else {
       try {
-        const encryptedUsername = encryptValue(form.username); // Encryptar el valor
-        console.log(encryptedUsername)
-
-        const encryptedPassword = encryptValue(form.password); // Encryptar el valor
-
-        const decryptedUsername = decryptValue(encryptedUsername); // Desencryptar el valor
-        console.log("Valor desencriptado:", decryptedUsername);
-
-        const decryptedPassword = decryptValue(encryptedPassword); // Desencryptar el valor
-        console.log("Valor desencriptado:", decryptedPassword);
-
-        const response = await AuthService.login(decryptedUsername, decryptedPassword);
-        if (response && response.roles && response.roles.includes('admin')) {
+        const response = await AuthService.login(email, password);
+        if (response) {
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -80,7 +54,7 @@ const TemplateLogin = () => {
           });
         }
       } catch (error) {
-        if (error.response && error.response.status === 401 || error.response && error.response.status === 404) {
+        if (error.response && error.response.status === 400 || error.response && error.response.status === 404) {
           Swal.fire({
             icon: 'error',
             title: 'Credenciales incorrectas',
@@ -114,10 +88,10 @@ const TemplateLogin = () => {
                 <input
                   type='text'
                   className='login__input'
-                  placeholder='Username'
-                  name='username'
-                  maxLength={12}
-                  onChange={handleChange}
+                  placeholder='Email'
+                  name='email'
+                  maxLength={50}
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete='off'
                   onKeyDown={(e) => {
                     if (/[<>\\/]/.test(e.key)) {
@@ -133,8 +107,8 @@ const TemplateLogin = () => {
                   className='login__input'
                   placeholder='Password'
                   name='password'
-                  maxLength={8}
-                  onChange={handleChange}
+                  maxLength={15}
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete='off'
                   onKeyDown={(e) => {
                     if (/[<>\\/]/.test(e.key)) {
