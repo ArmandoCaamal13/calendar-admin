@@ -8,9 +8,7 @@
     "dev": "webpack-dev-server --mode development --port 4000 --open",
     "start": "node server",
     "start:production": "npm run build & npm run start",
-    "build": "webpack --mode production",
-    "predeply": "npm run build",
-    "deploy": "gh-pages -d dist -r https://github.com/ArmandoCaamal13/calendar-admin.git"
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
@@ -69,6 +67,7 @@
     "realm-web": "^2.0.0",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
+    "serve": "^14.2.1",
     "sweetalert2": "^11.10.2",
     "validator": "^13.11.0"
   },
