@@ -12,7 +12,6 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <SpeedInsights/>
           <App />
       </ThemeProvider>
     </BrowserRouter>
