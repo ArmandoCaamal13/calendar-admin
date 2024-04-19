@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://localhost:7170/api/v1/autheticate/";
+const API_URL = "http://netcore.apicalendar.com/api/v1/autheticate/";
 
 class AuthService {
     async login(email, password){
