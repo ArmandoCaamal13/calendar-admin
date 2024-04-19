@@ -4,7 +4,7 @@ import "regenerator-runtime/runtime";
 const GetSeoXMl = async () => {
     //return SEO.Root.Site
     return new Promise((resolve, reject) => {
-        fetch(`http://netcore.apicalendar.com/cdn/seoxml`, {
+        fetch(`https://netcore.apicalendar.com/cdn/seoxml`, {
             // hostname: "mvc.garrafon.com",
             mode: "cors",
             credentials: "same-origin",
@@ -58,7 +58,7 @@ const SaveSeoXMl = async ({newData}) => {
       redirect: 'follow'
     };
     
-    fetch("http://netcore.apicalendar.com/cdn/guardarjson", requestOptions)
+    fetch("https://netcore.apicalendar.com/cdn/guardarjson", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));

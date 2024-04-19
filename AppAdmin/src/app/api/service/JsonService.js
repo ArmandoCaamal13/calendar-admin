@@ -1,7 +1,7 @@
 
 export const GetSeoJson = async () => {
     try {
-        const response = await fetch(`http://netcore.apicalendar.com/cdn/seoxml`);
+        const response = await fetch(`https://netcore.apicalendar.com/cdn/seoxml`);
         const data = await response.json();
         console.log(data)
         return data;
@@ -13,7 +13,7 @@ export const GetSeoJson = async () => {
 
 export const GuardarJson = async (updatedJsonData) => {
     try {
-        const response = await fetch(`http://netcore.apicalendar.com/cdn/guardarjson`, {
+        const response = await fetch(`https://netcore.apicalendar.com/cdn/guardarjson`, {
            method: 'POST' ,
            headers: {
             'Content-Type': 'application/json',

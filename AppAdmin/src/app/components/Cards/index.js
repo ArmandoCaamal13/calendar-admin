@@ -60,7 +60,7 @@ const CardView = () => {
 
                 updatedSite.Page = updatedPages
 
-                const response = await fetch(`http://netcore.apicalendar.com/cdn/guardarjson`, {
+                const response = await fetch(`https://netcore.apicalendar.com/cdn/guardarjson`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

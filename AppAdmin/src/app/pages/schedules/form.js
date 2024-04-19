@@ -163,7 +163,7 @@ const Form = ({
                 };
                 const site = dataFromComponentA.site;
                 const domain = dataFromComponentA.domain;
-                fetch(`http://netcore.apicalendar.com/cdn/calendar?site=${site}&domain=${domain}`, {
+                fetch(`https://netcore.apicalendar.com/cdn/calendar?site=${site}&domain=${domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ const Form = ({
                     ByTour: uniqueLocations,
                     Dates: updatedTourData
                 }
-                fetch(`http://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                fetch(`https://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -318,7 +318,7 @@ const Form = ({
                     ByTour: uniqueLocations,
                     Dates: updatedTourData
                 }
-                fetch(`http://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                fetch(`https://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -390,7 +390,7 @@ const Form = ({
                         ByTour: uniqueLocations,
                         Dates: tourData
                     }
-                    fetch(`http://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
+                    fetch(`https://netcore.apicalendar.com/cdn/calendar?site=${selectedSiteAndDomain?.site}&domain=${selectedSiteAndDomain?.domain}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
